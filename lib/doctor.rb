@@ -1,4 +1,5 @@
-require './lib/patient.rb'
+require './lib/patient'
+require './spec/spec_helper'
 
 class Doctor
   attr_accessor :name, :speciality, :id, :insurance_id
@@ -45,11 +46,13 @@ class Doctor
     patient_array = []
     result = DB.exec("SELECT * FROM doctors WHERE name = '#{doc_name}'")
     doc_id = result.first['id'].to_i
+
     result = DB.exec("SELECT * FROM patients WHERE doctor_id = #{doc_id}")
     result.each do |patient|
       patient_array << patient['name']
     end
     patient_array
+    # binding.pry
   end
 
   def self.find_insurance(doc_name)
@@ -60,11 +63,18 @@ class Doctor
   end
 
   def delete_speciality
-    DB.exec("UPDATE doctors SET speciality='none' WHERE name = '#{@name}'")
+    DB.exec("UPDATE doctors SET speciality='none' WHERE name = '#{@name}';")
   end
 
   def delete_doctor
-    DB.exec("ALTER TABLE patients MODIFY doctor_id = 0 WHERE doctor_id = #{@id}")
+    result = DB.exec("SELECT * FROM doctors WHERE name = '#{@name}'")
+    doc_id = result.first['id'].to_i
+
+    DB.exec("UPDATE patients SET doctor_id = 0 WHERE doctor_id = #{doc_id};")
     DB.exec("DELETE FROM doctors WHERE name = '#{@name}'")
+  end
+
+  def edit_name(name,new_name)
+    DB.exec("UPDATE doctors SET name=#{new_name} WHERE name = '#{name}';")
   end
 end

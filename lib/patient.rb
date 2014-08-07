@@ -1,4 +1,6 @@
-require './lib/doctor.rb'
+# require './lib/doctor'
+# require './spec/spec_helper'
+require 'pry'
 
 class Patient
   attr_accessor :name, :birthday, :doctor_id
@@ -21,19 +23,11 @@ class Patient
     patients
   end
 
-
-
-    # patient_array = []
-    # self.each do |patient|
-    #   if patient.doctor_id == doc_id
-    #     patient_array << patient.name
-    #   end
-    # end
-    # patient_array
-  # end
-
-  def assign(id)
-    self.doctor_id = id
+  def assign(name)
+    results = DB.exec("SELECT * FROM doctors WHERE name = '#{name}';")
+    doc_id = results.first['id'].to_i
+    DB.exec("UPDATE patients SET doctor_id = #{doc_id} WHERE name = '#{@name}';")
+    @doctor_id = doc_id
   end
 
   def save
