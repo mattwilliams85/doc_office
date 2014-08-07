@@ -48,6 +48,12 @@ class Patient
     DB.exec("DELETE FROM patients WHERE name = '#{@name}'")
   end
 
+  def delete_appt(name)
+    result1 = DB.exec("SELECT * FROM patients WHERE name = '#{name}'")
+    doctor_id = result1.first['doctor_id']
+    result2 = DB.exec("DELETE FROM appointments WHERE doctor_id = #{doctor_id}")
+  end
+
   def ==(other_patient)
     self.name == other_patient.name  && self.doctor_id == other_patient.doctor_id
   end

@@ -35,6 +35,19 @@ end
     expect(Doctor.all).to eq [@doc1,@doc2,@doc3]
   end
 
+  it 'adds up all the money a doctor has made for date range' do
+    app1 = Appointment.new(0,'',0.00,0,0)
+    app2 = Appointment.new(0,'',0.00,0,0)
+    create_var
+    save_var
+    @pat1.assign('Phil')
+    @pat2.assign('Phil')
+    app1.create_appointment('Sam','1985-07-26','10.00')
+    app2.create_appointment('Kate','1985-08-02','20.00')
+    expect(@doc1.find_sum('1985-01-01','1985-12-31')).to eq 30.00
+
+  end
+
   it 'is the same doctor if it has the same name' do
     doc1 = Doctor.new('Rob',"Psychology",1,3)
     doc2 = Doctor.new('Rob',"Psychology",1,2)

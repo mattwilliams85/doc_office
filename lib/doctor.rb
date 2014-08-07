@@ -68,7 +68,6 @@ class Doctor
       patient_array << patient['name']
     end
     patient_array
-    # binding.pry
   end
 
   def self.find_insurance(doc_name)
@@ -85,8 +84,12 @@ class Doctor
   def delete_doctor
     result = DB.exec("SELECT * FROM doctors WHERE name = '#{@name}'")
     doc_id = result.first['id'].to_i
-
     DB.exec("UPDATE patients SET doctor_id = 0 WHERE doctor_id = #{doc_id};")
     DB.exec("DELETE FROM doctors WHERE name = '#{@name}'")
+  end
+
+  def find_sum(range1,range2)
+    sum = DB.exec("SELECT sum(cost) FROM appointments WHERE doctor_id = #{@id} AND date >= '#{range1}' AND date <= '#{range2}'")
+    sum.first['sum'].to_f
   end
 end
