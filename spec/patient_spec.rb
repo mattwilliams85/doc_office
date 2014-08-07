@@ -35,4 +35,14 @@ describe Patient do
     patient.delete_patient
     expect(Patient.all).to eq []
   end
+
+  it 'allows you to search for like names' do
+    pat1 = Patient.new('Mark','3241432',1)
+    pat2 = Patient.new('Matthew','3241432',2)
+    pat3 = Patient.new('McShmitties','3241432',3)
+    pat1.save
+    pat2.save
+    pat3.save
+    expect(pat1.search('Ma')).to eq ['Mark','Matthew']
+  end
 end

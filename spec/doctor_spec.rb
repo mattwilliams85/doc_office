@@ -45,7 +45,6 @@ end
     app1.create_appointment('Sam','1985-07-26','10.00')
     app2.create_appointment('Kate','1985-08-02','20.00')
     expect(@doc1.find_sum('1985-01-01','1985-12-31')).to eq 30.00
-
   end
 
   it 'is the same doctor if it has the same name' do
@@ -105,5 +104,15 @@ end
     @pat2.assign(@doc3.name)
     @pat3.assign(@doc3.name)
     expect(@doc3.find_patients('Bill Clinton')).to eq ['Kate','Champ']
+  end
+
+    it 'allows you to search for like names' do
+    doc1 = Doctor.new('Mark','Stuff',1,1)
+    doc2 = Doctor.new('Matthew','Whatever',2,2)
+    doc3 = Doctor.new('McShmitties','IDK',3,3)
+    doc1.save
+    doc2.save
+    doc3.save
+    expect(doc1.search('Ma')).to eq ['Mark','Matthew']
   end
 end

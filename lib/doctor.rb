@@ -1,5 +1,3 @@
-require './lib/patient'
-require './spec/spec_helper'
 
 class Doctor
   attr_accessor :name, :speciality, :id, :insurance_id
@@ -91,5 +89,14 @@ class Doctor
   def find_sum(range1,range2)
     sum = DB.exec("SELECT sum(cost) FROM appointments WHERE doctor_id = #{@id} AND date >= '#{range1}' AND date <= '#{range2}'")
     sum.first['sum'].to_f
+  end
+
+  def search(string)
+    doctor_array = []
+    result = DB.exec("SELECT * FROM doctors WHERE name LIKE '#{string}%'")
+    result.each do |doctor|
+      doctor_array << doctor['name']
+    end
+    doctor_array
   end
 end

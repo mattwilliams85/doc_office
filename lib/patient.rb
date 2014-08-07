@@ -1,5 +1,3 @@
-# require './lib/doctor'
-# require './spec/spec_helper'
 require 'pry'
 
 class Patient
@@ -58,4 +56,12 @@ class Patient
     self.name == other_patient.name  && self.doctor_id == other_patient.doctor_id
   end
 
+  def search(string)
+    patient_array = []
+    result = DB.exec("SELECT * FROM patients WHERE name LIKE '#{string}%'")
+    result.each do |patient|
+      patient_array << patient['name']
+    end
+    patient_array
+  end
 end
