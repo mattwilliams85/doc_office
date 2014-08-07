@@ -41,12 +41,21 @@ end
     expect(@doc1).to eq @doc2
   end
 
+  it 'edits name, speciality, and insurance' do
+    create_var
+    @doc1.edit_name('Jackk')
+    @doc1.edit_speciality('geriatics')
+    @doc1.edit_insurance('3')
+    expect(@doc1.name).to eq ('Jackk')
+    expect(@doc1.speciality).to eq ('geriatics')
+    expect(@doc1.insurance_id).to eq (3)
+  end
+
   it 'assigns a patient to a specified doctor' do
     create_var
     save_var
     @pat1.assign('Phil')
     @pat1.save
-    binding.pry
     expect(@pat1.doctor_id).to eq @doc1.id
   end
 

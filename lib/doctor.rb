@@ -23,6 +23,22 @@ class Doctor
     @doctors
   end
 
+  def edit_name(new_name)
+    DB.exec("UPDATE doctors SET name = '#{new_name}' WHERE name = '#{@name}';")
+    @name = new_name
+  end
+
+  def edit_insurance(new_insurance)
+    new_insurance = new_insurance.to_i
+    DB.exec("UPDATE doctors SET insurance_id = '#{new_insurance}' WHERE insurance_id = '#{@insurance_id}';")
+    @insurance_id = new_insurance
+  end
+
+  def edit_speciality(new_speciality)
+    DB.exec("UPDATE doctors SET speciality = '#{new_speciality}' WHERE speciality = '#{@speciality}';")
+    @speciality = new_speciality
+  end
+
   def save
     results = DB.exec("INSERT INTO doctors (name, speciality, insurance_id) VALUES ('#{@name}', '#{@speciality}', '#{@insurance_id}') RETURNING id;")
     @id = results.first['id'].to_i
@@ -72,9 +88,5 @@ class Doctor
 
     DB.exec("UPDATE patients SET doctor_id = 0 WHERE doctor_id = #{doc_id};")
     DB.exec("DELETE FROM doctors WHERE name = '#{@name}'")
-  end
-
-  def edit_name(name,new_name)
-    DB.exec("UPDATE doctors SET name=#{new_name} WHERE name = '#{name}';")
   end
 end
