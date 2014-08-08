@@ -1,3 +1,5 @@
+require 'pry'
+require './lib/patient'
 class Appointment
 
      attr_accessor :patient, :date, :cost, :doctor, :id
@@ -24,16 +26,14 @@ class Appointment
     appointments
   end
 
-  def create_appointment(name, date, cost)
-    results = DB.exec("SELECT * FROM patients WHERE name = '#{name}';")
-    doctor_id = results.first['doctor_id'].to_i
-    patient_id = results.first['id'].to_i
-    DB.exec("INSERT INTO appointments (date, cost, doctor_id, patient_id) VALUES ('#{date}', #{cost}, #{doctor_id}, #{patient_id});")
+  def create_appointment(date, cost, doctor_id, patient_id)
+    @patient = patient_id.to_i
+    @doctor = doctor_id.to_i
     @date = date
-    @cost = cost
-    @doctor = doctor_id
-    @patient = patient_id
+    @cost = cost.to_f
 
+    self.save
+    # binding.pry
   end
 
   def save
@@ -54,7 +54,28 @@ class Appointment
     self.patient == other_appointment.patient
   end
 
+  def find_doctor_id(name)
+     @result = nil
+    Patient.all.each do |patient|
+      if patient.name == name
+        @result = patient.doctor_id
+      else
+        @result = 'whatever'
+      end
+    end
+    @result
+  end
 
+  def find_patient_id(name)
+    @result = nil
+    Patient.all.each do |patient|
+      if patient.name == name
+        @result = patient.id
+      end
+
+    end
+    @result
+  end
 
 end
 

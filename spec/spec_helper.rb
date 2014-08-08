@@ -18,9 +18,9 @@ RSpec.configure do |config|
     @doc1 = Doctor.new('Phil','Gynacology',10,2)
     @doc2 = Doctor.new('Rob',"Urologist",11,1)
     @doc3 = Doctor.new('Bill Clinton', 'Urologist', 23,2)
-    @pat1 = Patient.new('Sam','07261985',1)
-    @pat2 = Patient.new('Kate','54382943',2)
-    @pat3 = Patient.new('Champ','3242423',3)
+    @pat1 = Patient.new('Sam','07261985',1,1)
+    @pat2 = Patient.new('Kate','54382943',2,2)
+    @pat3 = Patient.new('Champ','3242423',3,3)
   end
 
   def save_var

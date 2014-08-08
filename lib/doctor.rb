@@ -57,7 +57,7 @@ class Doctor
     doc_array
   end
 
-   def find_patients(doc_name)
+   def self.find_patients(doc_name)
     patient_array = []
     result = DB.exec("SELECT * FROM doctors WHERE name = '#{doc_name}'")
     doc_id = result.first['id'].to_i

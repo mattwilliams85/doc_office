@@ -1,12 +1,13 @@
 require 'pry'
 
 class Patient
-  attr_accessor :name, :birthday, :doctor_id
+  attr_accessor :name, :birthday, :doctor_id, :id
 
-  def initialize(name, birthday, doctor_id)
+  def initialize(name, birthday, doctor_id, id)
     @name = name
     @birthday = birthday
     @doctor_id = doctor_id
+    @id = id
   end
 
   def self.all
@@ -16,9 +17,16 @@ class Patient
       name = patient['name']
       birthday = patient['birthday']
       doctor_id = patient['doctor_id'].to_i
-      patients << Patient.new(name, birthday, doctor_id)
+      id = patient['id'].to_i
+      patients << Patient.new(name, birthday, doctor_id, id)
     end
     patients
+  end
+
+  def update(name,birthday)
+    @name = name
+    @birthday = birthday
+    self.save
   end
 
   def assign(name)
@@ -29,7 +37,8 @@ class Patient
   end
 
   def save
-    DB.exec("INSERT INTO patients (name, birthday, doctor_id) VALUES ('#{@name}', '#{@birthday}', '#{@doctor_id}')")
+    results = DB.exec("INSERT INTO patients (name, birthday, doctor_id) VALUES ('#{@name}', '#{@birthday}', #{@doctor_id}) RETURNING id;")
+    @id = results.first['id'].to_i
   end
 
   def edit_name(new_name)

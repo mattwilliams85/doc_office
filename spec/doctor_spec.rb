@@ -2,23 +2,6 @@ require 'spec_helper'
 
 describe Doctor do
 
-def create_var
-  @doc1 = Doctor.new('Phil','Gynacology',10,2)
-  @doc2 = Doctor.new('Rob',"Urologist",11,1)
-  @doc3 = Doctor.new('Bill Clinton', 'Urologist', 23,2)
-  @pat1 = Patient.new('Sam','07261985',1)
-  @pat2 = Patient.new('Kate','54382943',2)
-  @pat3 = Patient.new('Champ','3242423',3)
-end
-
-def save_var
-  @doc1.save
-  @doc2.save
-  @doc3.save
-  @pat1.save
-  @pat2.save
-  @pat3.save
-end
 
   it 'initializes with name, speciality and id' do
     create_var
@@ -42,8 +25,8 @@ end
     save_var
     @pat1.assign('Phil')
     @pat2.assign('Phil')
-    app1.create_appointment('Sam','1985-07-26','10.00')
-    app2.create_appointment('Kate','1985-08-02','20.00')
+    app1.create_appointment('1985-07-26','10.00',@doc1.id,1)
+    app2.create_appointment('1985-08-02','20.00',@doc1.id,1)
     expect(@doc1.find_sum('1985-01-01','1985-12-31')).to eq 30.00
   end
 
