@@ -43,6 +43,7 @@ describe Patient do
     pat1.save
     pat2.save
     pat3.save
-    expect(pat1.search('Ma')).to eq ['Mark','Matthew']
+    Patient.all
+    expect(Patient.search('Ma')).to eq ['Mark | 3241432','Matthew | 3241432']
   end
 end

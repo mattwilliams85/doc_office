@@ -78,13 +78,12 @@ end
     expect(Doctor.find_specialists('Urologist').length).to eq 2
   end
 
-  it 'returns the correct insurance company for a specified doctor' do
-    doc1 = Doctor.new('Bill Clinton', 'Urologist', 25,2)
-    doc2 = Doctor.new('George Lucas', 'Ewokologist', 23,1)
+  it 'returns the correct doctors for a specified insurance company' do
+    doc1 = Doctor.new('Bill', 'Urologist', 25,2)
+    doc2 = Doctor.new('George', 'Ewokologist', 23,1)
     doc1.save
     doc2.save
-    expect(Doctor.find_insurance('Bill Clinton')).to eq 'Health Cross'
-    expect(Doctor.find_insurance('George Lucas')).to eq 'Red Shield'
+    expect(Doctor.find_insurance('Red Shield')).to eq ['George | Ewokologist']
   end
 
   it "deletes a specified doctor and removes his patients' doctor id" do
@@ -113,6 +112,7 @@ end
     doc1.save
     doc2.save
     doc3.save
-    expect(doc1.search('Ma')).to eq ['Mark','Matthew']
+    Doctor.all
+    expect(Doctor.search('Ma')).to eq ['Mark | Stuff','Matthew | Whatever']
   end
 end

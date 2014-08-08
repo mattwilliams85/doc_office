@@ -56,12 +56,16 @@ class Patient
     self.name == other_patient.name  && self.doctor_id == other_patient.doctor_id
   end
 
-  def search(string)
+  def self.search(string)
     patient_array = []
     result = DB.exec("SELECT * FROM patients WHERE name LIKE '#{string}%'")
     result.each do |patient|
-      patient_array << patient['name']
+      patient_array << patient['name'] + ' | ' + patient['birthday']
     end
     patient_array
+  end
+
+  def display_info
+    @name + ' | ' + @birthday
   end
 end

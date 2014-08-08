@@ -1,3 +1,4 @@
+require 'pry'
 
 class Doctor
   attr_accessor :name, :speciality, :id, :insurance_id
@@ -50,7 +51,7 @@ class Doctor
     doc_array = []
     @doctors.each do |doc|
       if doc.speciality == speciality
-        doc_array << doc.name
+        doc_array << doc.name + ' | ' + speciality
       end
     end
     doc_array
@@ -68,11 +69,20 @@ class Doctor
     patient_array
   end
 
-  def self.find_insurance(doc_name)
-    result = DB.exec("SELECT * FROM doctors WHERE name = '#{doc_name}'")
-    insurance = result.first['insurance_id'].to_i
-    result2 = DB.exec("SELECT * FROM insurance_companies WHERE id = #{insurance}")
-    insurance = result2.first['name']
+  def insurance
+    result = DB.exec("SELECT * FROM insurance_companies WHERE id = #{@insurance_id}")
+    result.first['name']
+  end
+
+  def self.find_insurance(insurance)
+    doctor_array = []
+    result = DB.exec("SELECT * FROM insurance_companies WHERE name = '#{insurance}'")
+    insurance_id = result.first['id'].to_i
+    result2 = DB.exec("SELECT * FROM doctors WHERE insurance_id = #{insurance_id}")
+    result2.each do |doctor|
+      doctor_array << doctor['name'] + ' | ' + doctor['speciality']
+    end
+    doctor_array
   end
 
   def delete_speciality
@@ -91,12 +101,16 @@ class Doctor
     sum.first['sum'].to_f
   end
 
-  def search(string)
+  def self.search(string)
     doctor_array = []
     result = DB.exec("SELECT * FROM doctors WHERE name LIKE '#{string}%'")
     result.each do |doctor|
-      doctor_array << doctor['name']
+      doctor_array << doctor['name'] + ' | ' + doctor['speciality']
     end
     doctor_array
+  end
+
+  def display_info
+    'Dr. ' + @name + ' | ' + @speciality + ' | ' + self.insurance
   end
 end
